@@ -70,23 +70,14 @@ class List(TrelloBase):
         :position: position of the card in the list. Must be "top", "bottom" or a positive number.
         :return: the card
         """
-        labels_str = ""
-        if labels:
-            for label in labels:
-                labels_str += label.id + ","
-
-        members_str = ""
-        if assign:
-            for assignee in assign:
-                members_str += assignee.id + ","
 
         post_args = {
             'name': name,
             'idList': self.id,
             'desc': desc,
-            'idLabels': labels_str[:-1],
+            'idLabels': ','.join(labels),
             'due': due,
-            'idMembers': members_str[:-1],
+            'idMembers': ','.join(assign),
             'idCardSource': source,
         }
         if position is not None:
