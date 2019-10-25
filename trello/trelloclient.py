@@ -245,7 +245,7 @@ class TrelloClient(object):
         There seems to be some sort of bug that makes you unable to create a
         hook using httplib2, so I'm using urllib2 for that instead.
         """
-        token = token or self.resource_owner_key
+        token = token or self.token
 
         if token is None:
             raise TokenError("You need to pass an auth token in to create a hook.")
@@ -254,7 +254,7 @@ class TrelloClient(object):
         data = {'callbackURL': callback_url, 'idModel': id_model,
                 'description': desc}
 
-        response = requests.post(url, data=data, auth=self.oauth)
+        response = requests.post(url, data=data, auth=self.oauth, params={"key": self.api_key, "token": self.token})
 
         if response.status_code == 200:
             hook_id = response.json()['id']
